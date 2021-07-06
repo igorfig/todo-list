@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="form.css">
+  <title>to-do List | Projeto</title>
+</head>
+<body>
+  <div id="container">
+    <header class="header">
+      <div class="title">
+        <h1>Todo List</h1>
+      </div>
+      <div class="timer">
+        <span class="timer">
+          Tempo: 00:18:22
+        </span>
+      </div> 
+    </header>
+    <main class="content">
+      <div class="tasks">
+        <ul>
+          <li class="task">
+            <a href="#" class="mark">[ ]</a> - Codar um App <span class="status">( Pendente )</span> 
+          </li>
+        </ul>
+
+        <a href="#" class="new-task">Adicionar tarefa</a>
+      </div>
+
+      <div class="modal no-display">
+        <h2>Adicionar tarefa</h2>
+        <form class="form">
+          <label for="name" class="sr-only">Nome da tarefa</label>
+          <input type="text" id="name" class="task-name" placeholder="Nome da tarefa" required>
+
+          <div class="btn-group">
+            <a href="#" class="cancel">Cancelar</a>
+            <a href="#" class="add">Adicionar</a>
+          </div>
+          
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelector('.mark').onclick = () => {
+      document.querySelector('.mark').textContent = '[ ✔ ]';
+      document.querySelector('.status').textContent = '( Concluído )';
+      document.querySelector('.status').classList.add("done")
+    }
+
+    document.querySelector('.cancel').onclick = () => {
+      document.querySelector(".modal").classList.add("no-display");
+      document.querySelector(".tasks").classList.remove("no-display");
+    }
+
+    document.querySelector(".new-task").onclick = () => {
+      document.querySelector(".modal").classList.remove("no-display");
+      document.querySelector(".tasks").classList.add("no-display");
+    }
+  </script>
+</body>
+</html>
