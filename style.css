@@ -61,6 +61,12 @@ body {
   }
 }
 
+@media (max-width: 800px) {
+  .content .tasks {
+    margin: 2rem;
+  }
+}
+
 .content .tasks {
   max-width: 800px;
   padding: 2rem;
