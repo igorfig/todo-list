@@ -102,11 +102,11 @@ function render(task, index) {
     li.classList.add('task')
     li.dataset.index = index
     li.innerHTML = `
-    <a href="#" class="mark" onclick="confirmTask(${index})">${status}</a>
-    <span class="task-title" ${cssProperty}>${task.title}</span>
-    <span class="status ${statusClass}">( ${task.status})</span>
-    <img src="./assets/excluir.png" onclick="deleteModalForm(${index})" class="remove">
-    ` 
+      <img src="assets/delete.svg" onclick="deleteModalForm(${index})" class="remove">
+      <a href="#" class="mark" onclick="confirmTask(${index})">${status}</a>
+      <span class="task-title" ${cssProperty}>${task.title}</span>
+      <span class="status ${statusClass}">( ${task.status})</span>
+    `
 
     document.querySelector('.task-list').appendChild(li);
     const emptyMessage = document.querySelector('.empty-message')
