@@ -1,71 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="form.css">
-  <title>to-do List | Projeto</title>
-</head>
-<body>
-  <div id="container">
-    <header class="header">
-      <div class="title">
-        <h1>Todo List</h1>
-      </div>
-      <div class="timer">
-        <span class="timer">
-          Tempo: 00:18:22
-        </span>
-      </div> 
-    </header>
-    <main class="content">
-      <div class="tasks">
-        <ul>
-          <li class="task">
-            <span><a href="#" class="mark">[ ]</a> - Codar um App <span class="status">( Pendente )</span></span>
-          </li>
-        </ul>
-
-        <a href="#" class="new-task">Adicionar tarefa</a>
-      </div>
-
-      <div class="modal no-display">
-        <h2>Adicionar tarefa</h2>
-        <form class="form">
-          <label for="name" class="sr-only">Título da tarefa</label>
-          <input type="text" id="name" class="task-name" placeholder="Título da tarefa" required>
-
-          <div class="btn-group">
-            <a href="#" class="cancel">Cancelar</a>
-            <a href="#" class="add">Adicionar</a>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>to-do List | Projeto</title>
+  </head>
+  <body>
+    <div id="container">
+      <header class="header">
+        <h1>Título</h1>
+      </header>
+      <main class="content">
+        <div class="tasks">
+          <div class="empty-message">
+            <h2>Ainda não há nada por aqui <span class="emoticon">(ㆆ_ㆆ)</span></h2>
+            <span class="sub">tente começar algo novo!</span>
           </div>
-          
-        </form>
-      </div>
-    </main>
-  </div>
+          <ul class="task-list">
+          </ul>
 
-  <script>
-    document.querySelector('.mark').onclick = () => {
-      document.querySelector('.mark').textContent = '[ ✔ ]';
-      document.querySelector('.status').textContent = '( Concluído )';
-      document.querySelector('.status').classList.add("done")
-    }
+          <a href="#" class="new-task" onclick="modalToggle()">Adicionar tarefa</a>
+        </div>
 
-    document.querySelector('.cancel').onclick = () => {
-      document.querySelector(".modal").classList.add("no-display");
-      document.querySelector(".tasks").classList.remove("no-display");
-    }
+        <div class='modal-overlay'>
+          <div class="modal">
+            <h2>Adicionar tarefa</h2>
+            <form class="form" onsubmit="submitForm(event)">
+              <label for="name" class="sr-only">Título da tarefa</label>
+              <input type="text" id="task-title" placeholder="Título da tarefa">
+              <small class="error-message"></small>
+              <div class="btn-group">
+                <a href="#" class="cancel" onclick="modalToggle()">Cancelar</a>
+                <button href="#" class="add">Adicionar</button>
+              </div>
+            </div>
+          </form>
 
-    document.querySelector(".new-task").onclick = () => {
-      document.querySelector(".modal").classList.remove("no-display");
-      document.querySelector(".tasks").classList.add("no-display");
-    }
-  </script>
+          <div class="modal-delete no-display">
+            <form onsubmit="deleteModalForm(event)">
+              <span class="alert">Você tem certeza de que deseja excluir essa tarefa?</span>
+             <div class="btn-group">
+              <a href="#" class="cancel-delete" onclick="cancelDelete()">Cancelar</a>
+              <button class="confirm">Excluir</button>
+             </div>
+            </form> 
+          </div>
+        </div>
+      </main>
+    </div>
+  <script src="app.js"></script>
 </body>
 </html>
