@@ -13,7 +13,7 @@
   <body>
     <div id="container">
       <header class="header">
-        <h1>Título</h1>
+        <h1>Lista de tarefas</h1>
       </header>
       <main class="content">
         <div class="tasks">
@@ -24,31 +24,49 @@
           <ul class="task-list">
           </ul>
 
-          <a href="#" class="new-task" onclick="modalToggle()">Adicionar tarefa</a>
+        
+         <div class="actions">
+          <a href="#" class="new-task" onclick="modalToggle(), preventDefault(event)">Adicionar tarefa</a>
+          <a href="#" class="clear-all" onclick="clearAllTasks(), preventDefault(event)">Limpar tudo</a>
+         </div>
         </div>
 
         <div class='modal-overlay'>
           <div class="modal">
             <h2>Adicionar tarefa</h2>
             <form class="form" onsubmit="submitForm(event)">
-              <label for="name" class="sr-only">Título da tarefa</label>
-              <input type="text" id="task-title" placeholder="Título da tarefa">
+              <label for="task-title" class="sr-only">Título da tarefa</label>
+              <input type="text" id="task-title" placeholder="Título da tarefa" autocomplete="off">
               <small class="error-message"></small>
               <div class="btn-group">
-                <a href="#" class="cancel" onclick="modalToggle()">Cancelar</a>
-                <button href="#" class="add">Adicionar</button>
+                <a href="#" class="cancel" onclick="modalToggle(), preventDefault(event)">Cancelar</a>
+                <button href="#" class="add">Salvar</button>
               </div>
             </div>
           </form>
 
+          <div class="modal-edit no-display">
+            <form class="form" id="edit-task-form">
+              <h2>Editar tarefa</h2>
+              <label for="task-title-edit" class="sr-only">Título da tarefa</label>
+              <input type="text" id="task-title-edit" placeholder="Título da tarefa" autocomplete="off">
+              <small class="error-message"></small>
+
+              <div class="btn-group">
+                <a href="#" class="cancel" onclick="modalToggle(), preventDefault(event)">Cancelar</a>
+                <button href="#" class="add">Salvar</button>
+              </div>
+            </form>
+          </div>
+
           <div class="modal-delete no-display">
-            <form onsubmit="deleteModalForm(event)">
-              <span class="alert">Você tem certeza de que deseja excluir essa tarefa?</span>
+            <form class="delete-task-form">
+              <span class="alert">Você tem certeza de que deseja excluir?</span>
              <div class="btn-group">
-              <a href="#" class="cancel-delete" onclick="cancelDelete()">Cancelar</a>
-              <button class="confirm">Excluir</button>
+              <a href="#" class="cancel-delete" onclick="modalDeleteToggle(), preventDefault(event)">Cancelar</a>
+              <button class="confirm" onclick="modalDeleteToggle()">Excluir</button>
              </div>
-            </form> 
+            </form>
           </div>
         </div>
       </main>

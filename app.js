@@ -14,6 +14,14 @@ function modalDeleteToggle() {
     modalDelete.classList.toggle('no-display')
 }
 
+function modalEditToggle() {
+  document.querySelector('.modal-overlay').classList.toggle('active');
+  document.querySelector('.modal-edit').classList.toggle('no-display')
+  document.querySelector('.modal').classList.toggle('no-display')
+  removeErrorWarning();
+}
+
+
 const Storage = {
   get: () => JSON.parse(localStorage.getItem('db_tasks')) || [],
   set: tasks => localStorage.setItem('db_tasks', JSON.stringify(tasks) || []) 
@@ -26,11 +34,21 @@ function addTasks(task) {
   App.reload()
 }
 
-function updateTask(task, index) {
+function updateTask(index) {
   const tasks = tasksData;
-  tasks[index] = task
-  App.reload()
-}
+  modalEditToggle();
+  const title = document.querySelector('#task-title-edit')
+  title.value = tasks[index].title;
+  const form = document.querySelector('#edit-task-form');
+
+  form.onsubmit = () => {
+    tasks[index] = {
+      title: title.value,
+      status: tasks[index].status
+    }
+    App.reload()
+  }
+} 
 
 function confirmTask(index) {
   const tasks = tasksData;
@@ -50,30 +68,45 @@ function confirmTask(index) {
   App.reload()
 }
 
-function undo(index) {
-  const tasks = tasksData;
-  tasks[index] = {
-    title: tasks[index].title,
-    status:'Pendente'
-  }
+function deleteTask(index) {
+  modalDeleteToggle()
+  const form = document.querySelector('.delete-task-form');
 
-  App.reload()
+  form.onsubmit = () => {
+    const tasks = tasksData;
+    tasks.splice(index, 1);
+    console.log(index)
+    App.reload();
+  }
+  
 }
 
-function deleteTask(index) {
-  const tasks = tasksData;
-  tasks.splice(index, 1);
-  App.reload();
+function clearAllTasks() {
+  modalDeleteToggle();
+  const form = document.querySelector('.delete-task-form');
+  form.addEventListener('submit', () => {
+    tasksData.splice(0, tasksData.length);
+    form.removeAttribute('onsubmit');
+    App.reload();
+  })
 }
 
 function listContentVerifier() {
   const task = document.querySelector(".task");
+  const emptyMessage = document.querySelector('.empty-message')
+  const clearAllTasksBTN = document.querySelector('.clear-all');
     if(task === null) {
-      const emptyMessage = document.querySelector('.empty-message')
       emptyMessage.classList.add('active')
+      clearAllTasksBTN.classList.add("no-display")
+    } else {
+      emptyMessage.classList.remove('active')
+      clearAllTasksBTN.classList.remove("no-display")
     }
 }
 
+function preventDefault(event) {
+  event.preventDefault();
+}
 
 function statusChecker(task) {
   let status;
@@ -83,7 +116,7 @@ function statusChecker(task) {
   if(task.status === 'Concluída') {
     status = '[ ✔ ] - '
     statusClass = 'done';
-    cssProperty = 'style="text-decoration: line-through;"'
+    cssProperty = 'style="text-decoration: line-through; opacity: .6;"'
   } else if(task.status === 'Pendente') {
     status = '[ ] - '
     statusClass = 'pending';
@@ -96,21 +129,30 @@ function statusChecker(task) {
   }
 }
 
+function teste() {
+  const taskTitleValue = document.querySelector('#task-title').value;
+  if(taskTitleValue.trim().length > 22) {
+      return taskTitleValue.substr(0, 22) + '...';
+  }
+}
+
 function render(task, index) {
   const li = document.createElement('li');
-    const { status, statusClass, cssProperty } = statusChecker(task);
+  const { status, statusClass, cssProperty } = statusChecker(task);
+  const title = task.title.trim().length > 22 ? task.title.substr(0, 22) + '...' : task.title
     li.classList.add('task')
     li.dataset.index = index
+
+
     li.innerHTML = `
-      <img src="assets/delete.svg" onclick="deleteModalForm(${index})" class="remove">
-      <a href="#" class="mark" onclick="confirmTask(${index})">${status}</a>
-      <span class="task-title" ${cssProperty}>${task.title}</span>
+      <img src="./assets/edit.png" class="edit" onclick="updateTask(${index})"/>
+      <img src="./assets/delete.svg" onclick="deleteTask(${index})" class="remove">
+      <a href="#" class="mark" onclick="confirmTask(${index}), preventDefault(event)">${status}</a>
+      <span class="task-title" onclick="updateTask(${index})" ${cssProperty}>${title}</span>
       <span class="status ${statusClass}">( ${task.status})</span>
     `
-
     document.querySelector('.task-list').appendChild(li);
-    const emptyMessage = document.querySelector('.empty-message')
-    emptyMessage.classList.remove('active')
+    listContentVerifier();
 }
 
 const clearTasks = () => document.querySelector('.task-list').innerHTML = '';
@@ -123,8 +165,6 @@ function validateForm() {
     }
 }
 
-const clearField = () => document.querySelector('#task-title').value = '';
-
 function removeErrorWarning() {
   const errorMessage = document.querySelector('.error-message');
   errorMessage.textContent = ''
@@ -132,6 +172,8 @@ function removeErrorWarning() {
   const inputTaskTitle = document.querySelector('#task-title')
   inputTaskTitle.classList.remove('error-warning')
 }
+
+const clearField = () => document.querySelector('#task-title').value = '';
 
 function submitForm(event) {
   event.preventDefault();
@@ -152,18 +194,6 @@ function submitForm(event) {
     inputTaskTitle.classList.add('error-warning')
   }
 }
-
-function deleteModalForm(index) {
-  modalDeleteToggle();
-
-  const formSubmit = document.querySelector('.confirm');
-
-  formSubmit.addEventListener('click', () => {
-    deleteTask(index)
-  })
-}
-
-const cancelDelete = () => modalDeleteToggle();
 
 const App = {
   init() {

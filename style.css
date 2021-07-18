@@ -17,6 +17,10 @@ body {
   color: white;
 }
 
+#container {
+  padding-bottom: 1rem;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -36,10 +40,9 @@ body {
   justify-content: center;
 }
 
-
 .content .tasks {
-  max-width: 800px;
-  /* min-height: 200px; */
+  max-width: 1000px;
+  min-width: 800px;
   padding: 2rem;
   width: 100%;
   border-radius: 10px;
@@ -51,16 +54,6 @@ body {
   display: flex;
   align-items: center;
 }
-
-.content .tasks .mark {
-  margin-right: 6px;
-}
-
-.content .tasks .status {
-  margin-left: 6px;
-}
-
-
 
 .tasks .empty-message{
   padding: 1rem;
@@ -91,7 +84,7 @@ body {
   white-space: nowrap;
 }
 
-.tasks .new-task {
+.tasks .actions a {
   float: right;
   position: relative;
   top: 20px;
@@ -106,17 +99,24 @@ body {
   color: white;
 }
 
-.task .remove{
+.tasks .task .task-title {
+  margin: 0 5px;
+}
+
+.task .remove, .edit{
   margin-right: 12px;
   opacity: .2;
   cursor: pointer;
+  transition: .2s ease-out;
 }
 
-.task .remove:hover {
-  opacity: 1
+@media (min-width: 768px) {
+  .task .remove:hover, .edit:hover {
+    opacity: 1
+  }
 }
 
-.content .new-task {
+.content .actions a {
   padding: 0.8rem;
   border-radius: 5px;
   background: #293030c2;
@@ -125,10 +125,17 @@ body {
   transition: 0.1s ease-in;
 }
 
-.new-task:hover {
-  color: #293030;
-  background: #F8F8F8
+@media(min-width: 768px) {
+  .actions .new-task:hover {
+    color: #293030;
+    background: #F8F8F8
+  }
 }
+
+.content .actions .clear-all {
+  right: 20px;
+}
+
 
 .modal-overlay{
   width: 100%;
@@ -147,14 +154,12 @@ body {
   z-index: 999;
 }
 
-
-
 .modal-overlay.active {
   visibility: visible;
   opacity: 1;
 }
 
-.modal {
+.modal, .modal-edit {
   display: grid;
   grid-template-columns: auto;
   max-width: 400px;
@@ -220,7 +225,7 @@ body {
   display: none;
 }
 
-.modal h2 {
+.modal h2, .modal-edit h2 {
   margin-bottom: 30px;
 }
 
@@ -228,7 +233,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 
 .form input[type="text"] {
   width: 100%;
@@ -240,6 +244,8 @@ body {
   font-size: 18px;
   align-self: center;
 }
+
+
 
 .error-message {
   font-weight: 300;
@@ -264,13 +270,14 @@ button {
   padding: 0.6rem;
 }
 
-.form .btn-group .add {
-  background: #04d361;
+.form .btn-group .add, .add-new-task {
+  background: #181818;
   color: white;
   font-size: 18px;
   border-radius: 5px;
   outline: none;
   border: none;
+  width: 150px;
 }
 
 .form .btn-group .cancel {
@@ -295,6 +302,77 @@ button {
   color: var(--green);
 }
 
-.expired {
-  color: var(--red);
+@media(max-width: 500px) {
+  .header h1 {
+     font-size: 2rem;
+   }
+
+   .content .tasks {
+     max-width: 375px;
+     min-width: 300px;
+
+     margin: .4rem;
+   }
+
+   .tasks .empty-message h2 {
+     font-size: 24px;
+   }
+
+   .tasks .empty-message .sub{
+    font-size: 16px;
+  }
+
+  .tasks .empty-message .emoticon {
+    font-size: 18px;
+  }
+
+  .tasks ul li {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .task .remove, .edit{
+    margin-right: 6px;
+    width: 20px;
+    opacity: .8;
+  }
+
+
+  .content .actions {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+  }
+
+  .content .actions a {
+    font-size: 16px;
+  }
+
+  .content .actions .clear-all {
+    right: 10px;
+    background: none;
+    height: 50px;
+  }
+
+  .modal {
+    margin: 0 .8rem;
+  }
+}
+
+@media(max-width: 375px) {
+  .tasks ul li {
+    font-size: 14px;
+  }
+
+  .edit {
+    display: none;
+  }
+  
+  .remove {
+    display: none;
+  }
+
+  .content .actions a {
+    font-size: 14px;
+  }
 }
