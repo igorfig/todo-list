@@ -93,16 +93,29 @@ function confirmTask(index) {
   App.reload()
 }
 
+function confirmAllTasks() {
+  const tasks = tasksData;
+  tasks.forEach((task, index) => {
+    task.status = task.status === 'Pendente' ? 'Concluída' : 'Pendente';
+    App.reload()
+  })
+
+}
+
 function listContentVerifier() {
   const task = document.querySelector(".task");
   const emptyMessage = document.querySelector('.empty-message')
   const clearAllTasksBTN = document.querySelector('.clear-all');
+  const checkAllTasksBTN = document.querySelector('.check-all')
+
     if(task === null) {
       emptyMessage.classList.add('active')
       clearAllTasksBTN.classList.add("no-display")
+      checkAllTasksBTN.classList.add('no-display')
     } else {
       emptyMessage.classList.remove('active')
       clearAllTasksBTN.classList.remove("no-display")
+      checkAllTasksBTN.classList.remove('no-display')
     }
 }
 

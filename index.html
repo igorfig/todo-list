@@ -17,13 +17,17 @@
       </header>
       <main class="content">
         <div class="tasks">
+          <div class="check-all-container">
+            <a href="#" onclick="preventDefault(event), confirmAllTasks()" class="check-all no-display" ><img src="assets/checkall.svg" alt="check-all"></a>
+          </div>
           <div class="empty-message">
             <h2>Ainda não há nada por aqui <span class="emoticon">(ㆆ_ㆆ)</span></h2>
             <span class="sub">tente começar algo novo!</span>
           </div>
           <ul class="task-list">
           </ul>
-          <div class="clear-all-container">
+          <div class="select-all-container">
+            
             <a href="#" class="clear-all" onclick="clearAllTasks(),preventDefault(event)">Limpar tudo</a>
           </div>
         </div>
