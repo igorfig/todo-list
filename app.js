@@ -118,7 +118,7 @@ function statusChecker(task) {
   let opacityLevel;
 
   if(task.status === 'Concluída') {
-    status = '[ ✔ ]'
+    status = '[✔]'
     statusClass = 'done';
     cssProperty = 'style="text-decoration: line-through; opacity: .6;"'
     opacityLevel = 'opacity: .6;'
