@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="style.css">
     <title>to-do List | Projeto</title>
   </head>
@@ -17,29 +17,29 @@
       </header>
       <main class="content">
         <div class="tasks">
+          <div class="clear-all-container">
+           <!--  <img src="./assets/delete-all.svg" class="clear-all" onclick="preventDefault(event)" /> -->
+          </div>
           <div class="empty-message">
             <h2>Ainda não há nada por aqui <span class="emoticon">(ㆆ_ㆆ)</span></h2>
             <span class="sub">tente começar algo novo!</span>
           </div>
           <ul class="task-list">
           </ul>
-
-        
-         <div class="actions">
-          <a href="#" class="new-task" onclick="modalToggle(), preventDefault(event)">Adicionar tarefa</a>
-          <a href="#" class="clear-all" onclick="clearAllTasks(), preventDefault(event)">Limpar tudo</a>
-         </div>
         </div>
-
+        
+        <div class="actions">
+         <a href="#" class="new-task" onclick="addNewTaskModal(), preventDefault(event)">+</a>
+        </div>
         <div class='modal-overlay'>
-          <div class="modal">
+          <div class="modal no-display">
             <h2>Adicionar tarefa</h2>
             <form class="form" onsubmit="submitForm(event)">
               <label for="task-title" class="sr-only">Título da tarefa</label>
               <input type="text" id="task-title" placeholder="Título da tarefa" autocomplete="off">
               <small class="error-message"></small>
               <div class="btn-group">
-                <a href="#" class="cancel" onclick="modalToggle(), preventDefault(event)">Cancelar</a>
+                <a href="#" class="cancel" onclick="addNewTaskModal(), preventDefault(event)">Cancelar</a>
                 <button href="#" class="add">Salvar</button>
               </div>
             </div>
@@ -53,7 +53,7 @@
               <small class="error-message"></small>
 
               <div class="btn-group">
-                <a href="#" class="cancel" onclick="modalToggle(), preventDefault(event)">Cancelar</a>
+                <a href="#" class="cancel" onclick="editFormModal(), preventDefault(event)">Cancelar</a>
                 <button href="#" class="add">Salvar</button>
               </div>
             </form>
@@ -63,8 +63,8 @@
             <form class="delete-task-form">
               <span class="alert">Você tem certeza de que deseja excluir?</span>
              <div class="btn-group">
-              <a href="#" class="cancel-delete" onclick="modalDeleteToggle(), preventDefault(event)">Cancelar</a>
-              <button class="confirm" onclick="modalDeleteToggle()">Excluir</button>
+              <a href="#" class="cancel-delete" onclick="confirmDeleteForm(), preventDefault(event)">Cancelar</a>
+              <button class="confirm" onclick="confirmDeleteForm()">Excluir</button>
              </div>
             </form>
           </div>

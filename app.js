@@ -1,26 +1,26 @@
-function modalToggle() {
+function modalOverlayToggle() {
   document.querySelector('.modal-overlay').classList.toggle('active');
   clearField();
   removeErrorWarning();
 }
 
-function modalDeleteToggle() {
-   modalToggle();
-
-    const modal = document.querySelector('.modal')
-    modal.classList.toggle('no-display')
-
-    const modalDelete = document.querySelector('.modal-delete')
-    modalDelete.classList.toggle('no-display')
+function addNewTaskModal() {
+  modalOverlayToggle();
+  const modal = document.querySelector('.modal');
+  modal.classList.toggle('no-display');
 }
 
-function modalEditToggle() {
+function editFormModal() {
   document.querySelector('.modal-overlay').classList.toggle('active');
-  document.querySelector('.modal-edit').classList.toggle('no-display')
-  document.querySelector('.modal').classList.toggle('no-display')
-  removeErrorWarning();
+  const modal = document.querySelector('.modal-edit');
+  modal.classList.toggle('no-display');
 }
 
+function confirmDeleteForm() {
+  modalOverlayToggle();
+  const modal = document.querySelector('.modal-delete');
+  modal.classList.toggle('no-display');
+}
 
 const Storage = {
   get: () => JSON.parse(localStorage.getItem('db_tasks')) || [],
@@ -36,9 +36,10 @@ function addTasks(task) {
 
 function updateTask(index) {
   const tasks = tasksData;
-  modalEditToggle();
+  editFormModal();
   const title = document.querySelector('#task-title-edit')
   title.value = tasks[index].title;
+  title.select()
   const form = document.querySelector('#edit-task-form');
 
   form.onsubmit = () => {
@@ -46,9 +47,33 @@ function updateTask(index) {
       title: title.value,
       status: tasks[index].status
     }
+    editFormModal();
+    removeErrorWarning();
     App.reload()
   }
 } 
+
+
+function deleteTask(index) {
+  confirmDeleteForm()
+  const form = document.querySelector('.delete-task-form');
+
+  form.onsubmit = () => {
+    const tasks = tasksData;
+    tasks.splice(index, 1);
+    App.reload();
+  }
+}
+
+/* function clearAllTasks() {
+  confirmDeleteForm();
+  const form = document.querySelector('.delete-task-form');
+  form.addEventListener('submit', () => {
+    tasksData.splice(0, tasksData.length);
+    form.removeAttribute('onsubmit');
+    App.reload();
+  })
+} */
 
 function confirmTask(index) {
   const tasks = tasksData;
@@ -68,39 +93,16 @@ function confirmTask(index) {
   App.reload()
 }
 
-function deleteTask(index) {
-  modalDeleteToggle()
-  const form = document.querySelector('.delete-task-form');
-
-  form.onsubmit = () => {
-    const tasks = tasksData;
-    tasks.splice(index, 1);
-    console.log(index)
-    App.reload();
-  }
-  
-}
-
-function clearAllTasks() {
-  modalDeleteToggle();
-  const form = document.querySelector('.delete-task-form');
-  form.addEventListener('submit', () => {
-    tasksData.splice(0, tasksData.length);
-    form.removeAttribute('onsubmit');
-    App.reload();
-  })
-}
-
 function listContentVerifier() {
   const task = document.querySelector(".task");
   const emptyMessage = document.querySelector('.empty-message')
   const clearAllTasksBTN = document.querySelector('.clear-all');
     if(task === null) {
       emptyMessage.classList.add('active')
-      clearAllTasksBTN.classList.add("no-display")
+      /* clearAllTasksBTN.classList.add("no-display") */
     } else {
       emptyMessage.classList.remove('active')
-      clearAllTasksBTN.classList.remove("no-display")
+      /* clearAllTasksBTN.classList.remove("no-display") */
     }
 }
 
@@ -113,43 +115,39 @@ function statusChecker(task) {
   let statusClass;
   let cssProperty;
 
+  let opacityLevel;
+
   if(task.status === 'Concluída') {
-    status = '[ ✔ ] - '
+    status = '[ ✔ ]'
     statusClass = 'done';
     cssProperty = 'style="text-decoration: line-through; opacity: .6;"'
+    opacityLevel = 'opacity: .6;'
   } else if(task.status === 'Pendente') {
-    status = '[ ] - '
+    status = '[ ] '
     statusClass = 'pending';
   }
 
   return {
     status,
     statusClass,
-    cssProperty
-  }
-}
-
-function teste() {
-  const taskTitleValue = document.querySelector('#task-title').value;
-  if(taskTitleValue.trim().length > 22) {
-      return taskTitleValue.substr(0, 22) + '...';
+    cssProperty,
+    opacityLevel
   }
 }
 
 function render(task, index) {
   const li = document.createElement('li');
-  const { status, statusClass, cssProperty } = statusChecker(task);
-  const title = task.title.trim().length > 22 ? task.title.substr(0, 22) + '...' : task.title
+  const { status, statusClass, cssProperty, opacityLevel } = statusChecker(task);
+  const title = task.title.trim().length > 20 ? task.title.substr(0, 22) + '...' : task.title
     li.classList.add('task')
     li.dataset.index = index
 
-
     li.innerHTML = `
-      <img src="./assets/edit.png" class="edit" onclick="updateTask(${index})"/>
-      <img src="./assets/delete.svg" onclick="deleteTask(${index})" class="remove">
-      <a href="#" class="mark" onclick="confirmTask(${index}), preventDefault(event)">${status}</a>
-      <span class="task-title" onclick="updateTask(${index})" ${cssProperty}>${title}</span>
-      <span class="status ${statusClass}">( ${task.status})</span>
+    <a href="#" class="mark ${statusClass}" onclick="confirmTask(${index}), preventDefault(event)">${status}</a>
+    <span style="margin-left:5px; ${opacityLevel}">-</span>
+    <span class="task-title" onclick="updateTask(${index})" ${cssProperty}> ${title}</span>
+    <img src="./assets/edit.png" class="edit" onclick="updateTask(${index})"/>
+    <img src="./assets/delete.svg" onclick="deleteTask(${index})" class="remove">
     `
     document.querySelector('.task-list').appendChild(li);
     listContentVerifier();
@@ -185,7 +183,7 @@ function submitForm(event) {
       title: taskTitleValue,
       status: 'Pendente'
     }) 
-    modalToggle();
+    addNewTaskModal();
   } catch (error) {
     const errorMessage = document.querySelector('.error-message');
     errorMessage.textContent = error.message
