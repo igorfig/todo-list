@@ -121,9 +121,14 @@ html, body {
   }
 }
 
+
 .clear-all-container .clear-all {
   float: right;
+  position: relative;
+  top: 10px;
   padding: .4rem 1rem;
+  font-weight: 300;
+  color: white;
 }
 
 .actions{

@@ -65,7 +65,7 @@ function deleteTask(index) {
   }
 }
 
-/* function clearAllTasks() {
+function clearAllTasks() {
   confirmDeleteForm();
   const form = document.querySelector('.delete-task-form');
   form.addEventListener('submit', () => {
@@ -73,7 +73,7 @@ function deleteTask(index) {
     form.removeAttribute('onsubmit');
     App.reload();
   })
-} */
+}
 
 function confirmTask(index) {
   const tasks = tasksData;
@@ -99,10 +99,10 @@ function listContentVerifier() {
   const clearAllTasksBTN = document.querySelector('.clear-all');
     if(task === null) {
       emptyMessage.classList.add('active')
-      /* clearAllTasksBTN.classList.add("no-display") */
+      clearAllTasksBTN.classList.add("no-display")
     } else {
       emptyMessage.classList.remove('active')
-      /* clearAllTasksBTN.classList.remove("no-display") */
+      clearAllTasksBTN.classList.remove("no-display")
     }
 }
 
