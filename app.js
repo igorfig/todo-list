@@ -95,9 +95,19 @@ function confirmTask(index) {
 
 function confirmAllTasks() {
   const tasks = tasksData;
-  tasks.forEach((task, index) => {
-    task.status = task.status === 'Pendente' ? 'Concluída' : 'Pendente';
+  
+  const pendingTasks = tasks.filter(task => task.status === 'Pendente')
+  const completedTasks = tasks.filter(task => task.status === 'Concluída')
+  pendingTasks.forEach(task => {
+    task.status = 'Concluída'
     App.reload()
+  })
+
+  completedTasks.forEach(task => {
+    if(pendingTasks.length === 0) {
+      task.status = 'Pendente';
+      App.reload()
+    }
   })
 
 }
