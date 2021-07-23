@@ -97,6 +97,37 @@ html, body {
 .tasks ul li {
   font-size: 24px;
   margin-bottom: 20px;
+  max-width: 80%;
+  min-width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.199);
+}
+
+@media(min-width: 600px) {
+  .tasks ul li {
+    min-width: 90%;
+  }
+
+  .content .tasks {
+    padding: 10px;
+  }
+
+}
+
+.icons-container {
+  display: flex;
+  align-items: center;
+}
+
+.icons-container .remove {
+  margin-right: 10px;
+}
+
+.menu, .close {
+  transition: 1s;
 }
 
 .tasks ul li .mark {
@@ -111,7 +142,7 @@ html, body {
   margin: 0 5px;
 }
 
-.task .remove, .edit{
+.task .remove {
   margin-left: 4px;
   opacity: .2;
   cursor: pointer;
@@ -119,7 +150,7 @@ html, body {
 }
 
 @media (min-width: 768px) {
-  .task .remove:hover, .edit:hover {
+  .task .remove:hover {
     opacity: 1
   }
 }
@@ -363,14 +394,10 @@ button {
     margin-bottom: 10px;
   }
 
-  .task .remove, .edit{
+  .task .remove{
     margin-left: 6px;
     width: 20px;
     opacity: .8;
-  }
-
-  .edit {
-    display: none;
   }
 
   .modal {
