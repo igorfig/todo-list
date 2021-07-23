@@ -158,6 +158,13 @@ function statusChecker(task) {
   }
 }
 
+
+function menuTransition(index) {
+  document.querySelectorAll('.menu')[index].classList.toggle("no-display");
+  document.querySelectorAll('.close')[index].classList.toggle("no-display");
+  document.querySelectorAll('.remove')[index].classList.toggle('no-display')
+}
+
 function render(task, index) {
   const li = document.createElement('li');
   const { status, statusClass, cssProperty, opacityLevel } = statusChecker(task);
@@ -166,14 +173,25 @@ function render(task, index) {
     li.dataset.index = index
 
     li.innerHTML = `
-    <a href="#" class="mark ${statusClass}" onclick="confirmTask(${index}), preventDefault(event)">${status}</a>
-    <span style="margin-left:5px; ${opacityLevel}">-</span>
-    <span class="task-title" onclick="updateTask(${index})" ${cssProperty}> ${title}</span>
-    <img src="./assets/edit.png" class="edit" onclick="updateTask(${index})"/>
-    <img src="./assets/delete.svg" onclick="deleteTask(${index})" class="remove">
+    <div>
+      <a href="#" class="mark ${statusClass}" onclick="confirmTask(${index}), preventDefault(event)">${status}</a>
+      <span style="margin-left:5px; ${opacityLevel}">-</span>
+      <span class="task-title" onclick="updateTask(${index})" ${cssProperty}> ${title}</span>
+    </div>
+    <div class="icons-container">
+      <img src="./assets/delete.svg" onclick="deleteTask(${index})" class="remove no-display">
+      <img src="./assets/menu.svg" onclick="menuTransition(${index})" class="menu">
+      <img src="./assets/close.svg" onclick="menuTransition(${index})" class="close no-display">
+    </div>
     `
+
     document.querySelector('.task-list').appendChild(li);
     listContentVerifier();
+
+    const dragArea = document.querySelector('.task-list');
+    new Sortable(dragArea, {
+      animation: 350,
+    })
 }
 
 const clearTasks = () => document.querySelector('.task-list').innerHTML = '';
