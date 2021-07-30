@@ -56,6 +56,10 @@ function updateTask(index) {
 
 function deleteTask(index) {
   confirmDeleteForm()
+  const confirmDeleteQuestion = document.querySelector('.alert');
+  const text = 'Você tem certeza que deseja excluir?'
+
+  confirmDeleteQuestion.textContent = text;
   const form = document.querySelector('.delete-task-form');
 
   form.onsubmit = () => {
@@ -67,6 +71,12 @@ function deleteTask(index) {
 
 function clearAllTasks() {
   confirmDeleteForm();
+  const confirmDeleteQuestion = document.querySelector('.alert')
+
+  const text = 'Você tem certeza que deseja excluir todas as tarefas?'
+
+  confirmDeleteQuestion.textContent = text
+
   const form = document.querySelector('.delete-task-form');
   form.addEventListener('submit', () => {
     tasksData.splice(0, tasksData.length);
