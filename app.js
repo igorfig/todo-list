@@ -35,7 +35,7 @@ function addTasks(task) {
 }
 
 function updateTask(index) {
-  const tasks = tasksData;show-options
+  const tasks = tasksData;
   editFormModal();
   const title = document.querySelector('#task-title-edit')
   title.value = tasks[index].title;
