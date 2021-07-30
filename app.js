@@ -35,7 +35,7 @@ function addTasks(task) {
 }
 
 function updateTask(index) {
-  const tasks = tasksData;
+  const tasks = tasksData;show-options
   editFormModal();
   const title = document.querySelector('#task-title-edit')
   title.value = tasks[index].title;
@@ -75,7 +75,7 @@ function clearAllTasks() {
   })
 }
 
-function confirmTask(index) {
+function doneTask(index) {
   const tasks = tasksData;
   let status;
 
@@ -93,7 +93,7 @@ function confirmTask(index) {
   App.reload()
 }
 
-function confirmAllTasks() {
+function doneAllTasks() {
   const tasks = tasksData;
   
   const pendingTasks = tasks.filter(task => task.status === 'Pendente')
@@ -114,18 +114,18 @@ function confirmAllTasks() {
 
 function listContentVerifier() {
   const task = document.querySelector(".task");
-  const emptyMessage = document.querySelector('.empty-message')
+  const emptyMessage = document.querySelector('.empty-message');
   const clearAllTasksBTN = document.querySelector('.clear-all');
-  const checkAllTasksBTN = document.querySelector('.check-all')
+  const doneAllTasksBTN = document.querySelector('.done-all');
 
     if(task === null) {
       emptyMessage.classList.add('active')
       clearAllTasksBTN.classList.add("no-display")
-      checkAllTasksBTN.classList.add('no-display')
+      doneAllTasksBTN.classList.add('no-display')
     } else {
       emptyMessage.classList.remove('active')
       clearAllTasksBTN.classList.remove("no-display")
-      checkAllTasksBTN.classList.remove('no-display')
+      doneAllTasksBTN.classList.remove('no-display')
     }
 }
 
@@ -141,12 +141,12 @@ function statusChecker(task) {
   let opacityLevel;
 
   if(task.status === 'Concluída') {
-    status = '[✔]'
+    status = 'done'
     statusClass = 'done';
-    cssProperty = 'style="text-decoration: line-through; opacity: .6;"'
+    cssProperty = 'text-decoration: line-through; opacity: .6;'
     opacityLevel = 'opacity: .6;'
   } else if(task.status === 'Pendente') {
-    status = '[ ] '
+    status = 'pending'
     statusClass = 'pending';
   }
 
@@ -158,40 +158,64 @@ function statusChecker(task) {
   }
 }
 
+const createElement = (elementName, attributes = undefined) => {
+  const element = document.createElement(elementName);
 
-function menuTransition(index) {
-  document.querySelectorAll('.menu')[index].classList.toggle("no-display");
-  document.querySelectorAll('.close')[index].classList.toggle("no-display");
-  document.querySelectorAll('.remove')[index].classList.toggle('no-display')
+  if(attributes !== undefined) {
+    const attributesAsArray = attributes !== undefined ? Object.entries(attributes) : undefined;
+    attributesAsArray.forEach(([key, value]) => element.setAttribute(key, value));
+  } 
+  return element
 }
 
 function render(task, index) {
-  const li = document.createElement('li');
-  const { status, statusClass, cssProperty, opacityLevel } = statusChecker(task);
-  const title = task.title.trim().length > 20 ? task.title.substr(0, 22) + '...' : task.title
-    li.classList.add('task')
-    li.dataset.index = index
+  const { cssProperty, status, statusClass } = statusChecker(task);
+  const li = createElement('li', {
+    class: 'task'
+  })
 
-    li.innerHTML = `
-    <div>
-      <a href="#" class="mark ${statusClass}" onclick="confirmTask(${index}), preventDefault(event)">${status}</a>
-      <span style="margin-left:5px; ${opacityLevel}">-</span>
-      <span class="task-title" onclick="updateTask(${index})" ${cssProperty}> ${title}</span>
-    </div>
-    <div class="icons-container">
-      <img src="./assets/delete.svg" onclick="deleteTask(${index})" class="remove no-display">
-      <img src="./assets/menu.svg" onclick="menuTransition(${index})" class="menu">
-      <img src="./assets/close.svg" onclick="menuTransition(${index})" class="close no-display">
-    </div>
-    `
+  const title = task.title.trim().length > 30 ? task.title.substr(0, 30) + '...' : task.title
 
-    document.querySelector('.task-list').appendChild(li);
-    listContentVerifier();
+  const checkboxContainer = createElement('div', {
+    class: 'checkbox-container',   
+  })
 
-    const dragArea = document.querySelector('.task-list');
-    new Sortable(dragArea, {
-      animation: 350,
-    })
+  const checkbox = createElement('div', {
+    class: `checkbox ${status}`,
+  })
+
+  checkbox.addEventListener('click', () => {
+    doneTask(index);
+  })
+
+  const span = createElement('span', {
+    class: 'task-title',
+    style: cssProperty,
+    onclick: `updateTask(${index})`
+  })
+
+  span.innerHTML = title
+
+  checkboxContainer.appendChild(checkbox);
+  checkboxContainer.appendChild(span);
+
+  li.appendChild(checkboxContainer);
+  
+  const img_Delete = createElement('img', {
+    src: './assets/delete.svg',
+    onclick: `deleteTask(${index})`,
+    class: "remove"
+  })
+
+  li.appendChild(img_Delete)
+ 
+  document.querySelector('.task-list').appendChild(li);
+  listContentVerifier();
+
+  const dragArea = document.querySelector('.task-list');
+  new Sortable(dragArea, {
+    animation: 350,
+  })
 }
 
 const clearTasks = () => document.querySelector('.task-list').innerHTML = '';

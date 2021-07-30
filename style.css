@@ -60,7 +60,7 @@ html, body {
   display: flex;
   align-items: center;
 
-  margin: 25px;
+  margin: 20px;
 }
 
 
@@ -97,14 +97,58 @@ html, body {
 .tasks ul li {
   font-size: 24px;
   margin-bottom: 20px;
-  max-width: 80%;
-  min-width: 80%;
+  max-width: 100%;
+  min-width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.199);
+  padding: 5px;
 }
+
+@media(min-width: 300px)  and (max-width: 769px) {
+  .tasks ul li {
+    max-width: 90%;
+    min-width: 90%;
+  }
+}
+
+.tasks ul li .task-title {
+  word-break: break-all;
+}
+
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer
+}
+
+.checkbox {
+  width: 1.25em;
+  height: 1.25em;
+  border: solid 2px #cccccc;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+  padding: .4em;
+}
+
+ .checkbox::after {
+  content: '\2714';
+  color: #fff;
+  transform: scale(0);
+}
+
+ .done {
+  background: #2266dc;
+  border-color: #2266dc; 
+}
+
+.done::after {
+  transform: scale(1);
+} 
 
 @media(min-width: 600px) {
   .tasks ul li {
@@ -117,25 +161,8 @@ html, body {
 
 }
 
-.icons-container {
-  display: flex;
-  align-items: center;
-}
-
-.icons-container .remove {
+.remove {
   margin-right: 10px;
-}
-
-.menu, .close {
-  transition: 1s;
-}
-
-.tasks ul li .mark {
-  color: white;
-}
-
-.tasks ul li .mark.done{
-  color: var(--green);
 }
 
 .tasks .task .task-title {
@@ -146,28 +173,38 @@ html, body {
   margin-left: 4px;
   opacity: .2;
   cursor: pointer;
-  transition: .2s ease-out;
+  transition: all .2s ease-in-out;
 }
 
 @media (min-width: 768px) {
   .task .remove:hover {
     opacity: 1
   }
+
+  .select-all-container .clear-all:hover, .done-all:hover {
+    opacity: 1;
+  }
+}
+
+.actions-container {
+  float: right;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
 
 .select-all-container .clear-all {
-  float: right;
   padding: 1rem;
   font-weight: 300;
   font-size: 16px;
   color: white;
+  
+  padding-bottom: 10px
 }
 
-.check-all-container .check-all {
-  float: right;
-  padding: .6rem 0;
-  position: relative;
-  right: 10px;
+.select-all-container .clear-all, .done-all {
+  opacity: .2;
+  transition: all .2s ease-in-out;
 }
 
 .actions{
@@ -360,11 +397,7 @@ button {
 .no-display {
   display: none !important;
 }
-/* 
-.done {
-  color: var(--green);
-}
- */
+
 @media(max-width: 500px) {
   .header h1 {
      font-size: 2rem;
@@ -400,18 +433,21 @@ button {
     opacity: .8;
   }
 
+  .select-all-container .clear-all, .done-all {
+    opacity: .8;
+  }
+
   .modal {
     margin: 0 .8rem;
   }
 }
 
 @media(max-width: 375px) {
-  .tasks ul li {
-    font-size: 14px;
+  .tasks .task-title {
+    font-size: 16px;
   }
-
-  .edit {
-    display: none;
-  }
+  .tasks .checkbox {
+    padding: 10px;
+  } 
 
 }

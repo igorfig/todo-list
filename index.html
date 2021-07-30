@@ -18,19 +18,24 @@
       </header>
       <main class="content">
         <div class="tasks">
-          <div class="check-all-container">
-            <a href="#" onclick="preventDefault(event), confirmAllTasks()" class="check-all no-display" ><img src="assets/checkall.svg" alt="check-all"></a>
-          </div>
+         
           <div class="empty-message">
             <h2>Ainda não há nada por aqui <span class="emoticon">(ㆆ_ㆆ)</span></h2>
             <span class="sub">tente começar algo novo!</span>
           </div>
           <ul class="task-list">
           </ul>
-          <div class="select-all-container">
-            
-            <a href="#" class="clear-all" onclick="clearAllTasks(),preventDefault(event)">Limpar tudo</a>
-          </div>
+
+          <div class="actions-container">
+            <div class="select-all-container">
+              <a href="#" onclick="preventDefault(event), doneAllTasks()" class="done-all" >
+                <img src="assets/done_all.svg" alt="concluir todas as tarefas">
+              </a>
+              <a href="#" class="clear-all" onclick="clearAllTasks(),preventDefault(event)">
+                <img src="assets/clear_all.svg" alt="excluir todas as tarefas">
+              </a>
+            </div>
+          </div>    
         </div>
         
        
@@ -78,5 +83,6 @@
       </main>
     </div>
   <script src="app.js"></script>
+  <script src="./script/menuAnimation.js"></script>
 </body>
 </html>
